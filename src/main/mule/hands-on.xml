@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0b20e1fb-013c-4841-837e-a265553e4115" >
+		<http:listener-connection host="0.0.0.0" port="8089" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="01baa84d-e695-4dea-83e1-6f2bb881c507" >
+		<http:request-connection host="localhost" port="8089" />
+	</http:request-config>
+	<flow name="hands-onFlow" doc:id="19e2e6b8-3054-4093-9731-ee99d88a3688" >
+		<http:listener doc:name="Listener" doc:id="c31c7ea6-e382-42b7-8972-f1f95cf1e753" config-ref="HTTP_Listener_config" path="convert"/>
+		<logger level="INFO" doc:name="Logger" doc:id="0f322b01-8d72-467d-89c0-e31acd8cb213" message="#[payload.Invoice.Items]"/>
+		<ee:transform doc:name="Transform Message" doc:id="811dc8fb-2229-41b4-9f77-d6fe50e01dc5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  Invoice: {
+    invoiceNumber: trim(payload.Invoice.InvoiceNumber),
+    invoiceDate: payload.Invoice.InvoiceDate,
+    invoiceType: payload.Invoice.InvoiceType,
+    items: (payload.Invoice.Items.*Item) map((item) -> {
+    	itemNumber: item.ItemNumber as Number,
+      materialId: trim(item.MaterialId),
+      description: trim(item.Description),
+      quantity: item.Quantity as Number,
+      price: item.Price as Number,
+      totalAmount: item.TotalAmount as Number
+    })
+  }
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

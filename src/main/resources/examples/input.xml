@@ -1,0 +1,31 @@
+<Invoice>
+    <InvoiceNumber>          INV123456             </InvoiceNumber>
+    <InvoiceDate>2025-04-10</InvoiceDate>
+    <InvoiceType>INV</InvoiceType>
+    <Items>
+        <Item>
+            <ItemNumber>10</ItemNumber>
+            <MaterialId>     car-elroq-2025        </MaterialId>
+            <Description>   Skoda Elroq  </Description>
+            <Quantity>2</Quantity>
+            <Price>48000</Price>
+            <TotalAmount>96000</TotalAmount>
+        </Item>
+        <Item>
+            <ItemNumber>20</ItemNumber>
+            <MaterialId>     car-enyaq-2025    </MaterialId>
+            <Description>   Skoda Enyaq     </Description>
+            <Quantity>1</Quantity>
+            <Price>50000</Price>
+            <TotalAmount>50000</TotalAmount>
+        </Item>
+        <Item>
+            <ItemNumber>30</ItemNumber>
+            <MaterialId>  car-kamiq-2025   </MaterialId>
+            <Description>   Skoda Kamiq   </Description>
+            <Quantity>3</Quantity>
+            <Price>35000</Price>
+            <TotalAmount>105000</TotalAmount>
+        </Item>
+    </Items>
+</Invoice>
